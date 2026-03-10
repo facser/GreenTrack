@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你的專屬碳中和證書 | GreenTrack</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: '#0b3d2e',
+                        leaf: '#7ac143',
+                        accent: '#23c16b',
+                        earth: '#f4f1ea',
+                        mist: '#f8faf8',
+                        gold: '#d4af37'
+                    },
+                    boxShadow: {
+                        soft: '0 10px 30px rgba(0,0,0,0.08)',
+                        glow: '0 0 20px rgba(122, 193, 67, 0.4)'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body { font-family: "Noto Sans TC", sans-serif; background-color: #f8faf8; }
+        .certificate-bg {
+            background: linear-gradient(135deg, #0b3d2e 0%, #11523f 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .certificate-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 60%);
+            transform: rotate(30deg);
+            pointer-events: none;
+        }
+        .watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 15rem;
+            opacity: 0.03;
+            color: white;
+            pointer-events: none;
+            user-select: none;
+        }
+        .cert-border {
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            outline: 1px solid rgba(212, 175, 55, 0.1);
+            outline-offset: 4px;
+        }
+        @media print {
+            body * { visibility: hidden; }
+            #printable-certificate, #printable-certificate * { visibility: visible; }
+            #printable-certificate { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none !important; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="text-gray-800 pb-20">
+
+    <!-- Chosen Palette: Forest (#0b3d2e), Leaf (#7ac143), Earth (#f4f1ea), Gold (#d4af37) -->
+    <!-- Application Structure Plan: This page serves as the post-conversion 'Reward and Upsell' phase. It features a large, interactive Digital Certificate generated via CSS/HTML to satisfy the user's desire for social sharing (Scalability goal). Alongside the certificate, a contextual 'Affiliate Product' section dynamically updates based on URL parameters (simulating data passed from index.html) to demonstrate the B2B/E-commerce revenue model. -->
+    <!-- Visualization & Content Choices: 
+         - Interactive Form -> HTML Certificate: Real-time name binding to increase user investment and psychological ownership.
+         - Contextual Upsell Cards (HTML/Tailwind + JS): Dynamically displaying eco-friendly products based on the user's primary emission source (mocked via logic), directly addressing the 'Affiliate Marketing' goal in the business plan without needing backend SVGs.
+         - Unicode Badges (🌍, 🏅) replace SVGs to maintain strict compliance while retaining visual hierarchy. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <header class="bg-white shadow-sm sticky top-0 z-50 no-print">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-forest font-bold text-xl tracking-wide flex items-center gap-2">
+                <span>🌿</span> GreenTrack
+            </a>
+            <a href="index.html" class="text-sm font-medium text-gray-500 hover:text-forest transition">返回首頁計算機</a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 mt-10">
+        <div class="text-center mb-10 no-print">
+            <div class="inline-block px-4 py-1.5 rounded-full bg-leaf/20 text-forest text-sm font-bold mb-4">
+                🎉 訂閱成功 / 減碳行動已記錄
+            </div>
+            <h1 class="text-3xl md:text-4xl font-black text-forest mb-4">感謝你，地球因你而降溫了一點點。</h1>
+            <p class="text-gray-600">這是為你專屬生成的碳中和數位證明，你可以隨時保存或分享至社群。</p>
+        </div>
+
+        <div class="grid lg:grid-cols-5 gap-10 items-start">
+            
+            <div class="lg:col-span-3 space-y-6">
+                <div class="bg-white p-6 rounded-3xl shadow-soft no-print">
+                    <label class="block text-sm font-bold text-forest mb-2">請輸入你要顯示在證書上的姓名或暱稱：</label>
+                    <input type="text" id="userNameInput" placeholder="例如：王小明 或 綠色探險家" class="w-full px-4 py-3 rounded-xl bg-earth border-none focus:ring-2 focus:ring-leaf text-forest font-bold text-lg" value="地球公民">
+                </div>
+
+                <div id="printable-certificate" class="certificate-bg rounded-3xl p-8 md:p-12 shadow-glow text-white text-center relative cert-border">
+                    <div class="watermark">🌍</div>
+                    <div class="relative z-10">
+                        <div class="text-6xl mb-4">🏅</div>
+                        <h2 class="text-xl tracking-[0.2em] text-gold font-bold mb-2 uppercase">Official Impact Certificate</h2>
+                        <div class="h-px w-24 bg-gold mx-auto mb-8 opacity-50"></div>
+                        
+                        <p class="text-white/80 mb-2">特此證明</p>
+                        <h3 id="certNameDisplay" class="text-4xl md:text-5xl font-black mb-8 text-white tracking-wide">地球公民</h3>
+                        
+                        <p class="text-lg text-white/90 leading-relaxed max-w-md mx-auto mb-10">
+                            已成功透過 GreenTrack 計畫參與減碳行動，並資助植樹專案。<br>
+                            本月成功抵消 <span class="text-leaf font-bold text-2xl mx-1" id="certOffsetAmount">4</span> 棵樹的碳排放量。
+                        </p>
+                        
+                        <div class="grid grid-cols-2 gap-4 border-t border-white/20 pt-6 text-sm text-left">
+                            <div>
+                                <p class="text-white/50 text-xs uppercase tracking-wider mb-1">認證日期</p>
+                                <p class="font-mono font-bold" id="certDate">2026.10.24</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-white/50 text-xs uppercase tracking-wider mb-1">區塊鏈 Hash (模擬)</p>
+                                <p class="font-mono text-leaf font-bold" id="certHash">0x9E2A...B41C</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 no-print">
+                    <button onclick="window.print()" class="flex-1 bg-forest text-white py-4 rounded-xl font-bold hover:bg-[#082a20] transition shadow-soft flex items-center justify-center gap-2">
+                        <span>📥</span> 下載證書圖片 (PDF)
+                    </button>
+                    <button onclick="alert('已複製分享連結！這是一項社群病毒式傳播功能展示。')" class="flex-1 bg-white border-2 border-forest text-forest py-4 rounded-xl font-bold hover:bg-earth transition shadow-soft flex items-center justify-center gap-2">
+                        <span>🔗</span> 複製 IG/FB 分享連結
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 space-y-6 no-print">
+                <div class="bg-white p-8 rounded-3xl shadow-soft">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="text-3xl">💡</div>
+                        <div>
+                            <h3 class="font-black text-forest text-xl">專屬減碳下一步</h3>
+                            <p class="text-sm text-gray-500" id="recommendationReason">根據你之前的計算結果推薦</p>
+                        </div>
+                    </div>
+
+                    <div id="productCard" class="bg-earth rounded-2xl p-6 border-l-4 border-accent transition-all hover:shadow-md">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="text-4xl" id="productIcon">🥡</div>
+                            <span class="bg-leaf text-forest text-xs font-bold px-2 py-1 rounded">GreenTrack 會員專屬 85 折</span>
+                        </div>
+                        <h4 class="font-bold text-lg text-forest mb-2" id="productTitle">食品級矽膠折疊環保餐盒</h4>
+                        <p class="text-sm text-gray-600 mb-4 leading-relaxed" id="productDesc">
+                            發現你的「外送」碳排比例偏高。使用這款輕便好攜帶的餐盒，一年可減少近 150 個一次性塑膠盒浪費，直接從源頭減碳。
+                        </p>
+                        <button onclick="alert('跳轉至合作電商平台，並帶入 Affiliate 追蹤碼。')" class="w-full py-3 bg-white text-forest font-bold rounded-xl border border-gray-200 hover:border-accent hover:text-accent transition">
+                            前往兌換專屬優惠
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-[#112a24] rounded-3xl p-8 text-white shadow-soft">
+                    <h3 class="font-black text-leaf text-xl mb-4">ESG 企業影響力計畫</h3>
+                    <p class="text-gray-300 text-sm leading-7 mb-6">
+                        你是企業人資或部門主管嗎？將 GreenTrack 引入公司，做為員工福利，系統將自動為您生成符合國際標準的企業減碳永續報告書。
+                    </p>
+                    <button onclick="alert('開啟 B2B 聯絡表單')" class="w-full py-3 bg-leaf text-forest font-bold rounded-xl hover:opacity-90 transition">
+                        聯絡企業顧問
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const userNameInput = document.getElementById('userNameInput');
+        const certNameDisplay = document.getElementById('certNameDisplay');
+        const certDate = document.getElementById('certDate');
+        const certHash = document.getElementById('certHash');
+        const certOffsetAmount = document.getElementById('certOffsetAmount');
+
+        const productIcon = document.getElementById('productIcon');
+        const productTitle = document.getElementById('productTitle');
+        const productDesc = document.getElementById('productDesc');
+        const recommendationReason = document.getElementById('recommendationReason');
+
+        userNameInput.addEventListener('input', (e) => {
+            const val = e.target.value.trim();
+            certNameDisplay.textContent = val ? val : '地球公民';
+        });
+
+        function initCertificateData() {
+            const today = new Date();
+            certDate.textContent = `${today.getFullYear()}.${String(today.getMonth()+1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
+
+            const randomHash = '0x' + Math.random().toString(16).substr(2, 6).toUpperCase() + '...' + Math.random().toString(16).substr(2, 4).toUpperCase();
+            certHash.textContent = randomHash;
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const plan = urlParams.get('plan') || 'pioneer';
+            const weakness = urlParams.get('weakness') || 'delivery';
+
+            let trees = 4; 
+            if (plan === 'seed') trees = 1;
+            if (plan === 'leader') trees = 15;
+            certOffsetAmount.textContent = trees;
+
+            if (weakness === 'coffee') {
+                productIcon.textContent = '☕';
+                productTitle.textContent = '不鏽鋼真空隨行保溫杯';
+                productDesc.textContent = '你的「飲品」消耗較高。帶上專屬保溫杯，不僅各店家有折價優惠，一年還能省下超過 300 個紙杯與塑膠蓋的碳排。';
+recommendationReasontextContent'針對「飲品碳排偏高」推薦'
+推薦理由 。 textContent = '針對「飲品碳排偏高」推薦' ;
+            } else if (weakness === 'energy') {
+                productIcon.textContent = '🔌';
+                productTitle.textContent = 'Wi-Fi 智慧節能定時插座';
+                productDesc.textContent = '你的「待機用電」是主要碳排來源。透過手機 App 設定定時開關，徹底切斷無效的待機電力，每月輕鬆省下 15% 電費與碳排。';
+                recommendationReason.textContent = '針對「待機用電偏高」推薦';
+            } else {
+                productIcon.textContent = '🥡';
+                productTitle.textContent = '食品級矽膠折疊環保餐盒';
+                productDesc.textContent = '發現你的「外送」碳排比例偏高。使用這款輕便好攜帶的餐盒，一年可減少近 150 個一次性塑膠盒浪費，直接從源頭減碳。';
+                recommendationReason.textContent = '針對「外送碳排偏高」推薦';
+            }
+        }
+
+        initCertificateData();
+    </script>
+</body>
+</html>
