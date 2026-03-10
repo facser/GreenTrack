@@ -351,6 +351,7 @@
           <p class="text-gray-300 leading-8">根據計算結果推薦適合的減量與抵消方案，降低選擇門檻。</p>
           <p class="mt-4 text-sm font-bold text-leaf">點擊查看詳細內容</p>
         </button>
+        <!-- 修改為可以直接跳轉到證書頁面的按鈕 -->
         <button type="button" onclick="goToCertificate('pioneer')" class="bg-[#112a24] p-8 rounded-3xl border border-green-800 text-center hover:border-leaf hover:-translate-y-1 hover:shadow-lg transition-all cursor-pointer">
           <div class="w-16 h-16 rounded-full bg-leaf text-forest flex items-center justify-center text-2xl font-black mx-auto mb-5">3</div>
           <div class="text-4xl mb-4">🏆</div>
@@ -394,22 +395,6 @@
             <li>讓使用者用更低門檻開始環保行動。</li>
           </ul>
         </div>
-
-        <div id="solutionDetail3" class="solution-detail bg-[#112a24] rounded-3xl p-8 border border-green-800">
-          <div class="flex items-center gap-4 mb-4">
-            <div class="text-4xl">🏆</div>
-            <h3 class="text-2xl font-black text-leaf">證書勳章｜把成果留下來並分享出去</h3>
-          </div>
-          <p class="text-gray-200 leading-8 mb-4">
-            當使用者完成減碳目標或參與環保計畫後，可以獲得可分享的數位勳章與成果證明，
-            增加成就感，也讓更多人看見永續行動的影響力。
-          </p>
-          <ul class="list-disc pl-6 text-gray-300 leading-8">
-            <li>建立使用者持續參與的動機。</li>
-            <li>讓成果能分享到社群或作為活動紀錄。</li>
-            <li>提升品牌與使用者之間的互動感。</li>
-          </ul>
-        </div>
       </div>
     </div>
   </section>
@@ -424,7 +409,7 @@
       </div>
 
       <div class="grid lg:grid-cols-3 gap-8 items-stretch">
-        <div class="pricing-plan bg-white rounded-[2rem] p-10 shadow-soft border border-gray-100 flex flex-col" data-plan="seed">
+        <div class="pricing-plan bg-white rounded-[2rem] p-10 shadow-soft border border-gray-100 flex flex-col cursor-pointer" data-plan="seed">
           <div class="text-center mb-8">
             <h3 class="text-2xl font-black text-forest mb-4">種子成員 (Seed)</h3>
             <div class="flex items-end justify-center gap-2">
@@ -432,57 +417,56 @@
               <span class="text-2xl text-gray-400 mb-1">/ 月</span>
             </div>
           </div>
-          <ul class="space-y-4 text-gray-700 leading-8 flex-1">
+          <ul class="space-y-4 text-gray-700 leading-8 flex-1 pointer-events-none">
             <li class="flex gap-3"><span class="text-accent font-black">✓</span><span>每月抵消 1 棵樹的碳排</span></li>
             <li class="flex gap-3"><span class="text-accent font-black">✓</span><span>基礎個人碳排放週報</span></li>
             <li class="flex gap-3"><span class="text-accent font-black">✓</span><span>GreenTrack 綠色社群入口</span></li>
           </ul>
-          <button type="button" class="plan-btn mt-8 w-full rounded-full border-2 border-forest text-forest font-black py-4 hover:bg-forest hover:text-white transition" data-role="secondary">
+          <button type="button" class="plan-btn mt-8 w-full rounded-full border-2 border-forest text-forest font-black py-4 transition pointer-events-none">
             選擇方案
           </button>
         </div>
 
-        <div class="pricing-plan selected bg-forest rounded-[2rem] p-10 shadow-soft border-2 border-accent flex flex-col relative overflow-hidden" data-plan="pioneer">
-          <div class="absolute top-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-leaf text-forest font-black text-sm px-6 py-2 rounded-full shadow">
+        <div class="pricing-plan selected bg-forest rounded-[2rem] p-10 shadow-soft border-2 border-accent flex flex-col relative overflow-hidden cursor-pointer" data-plan="pioneer">
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-leaf text-forest font-black text-sm px-6 py-2 rounded-full shadow pointer-events-none">
             最受歡迎推薦
           </div>
-          <div class="text-center mb-8 pt-6">
+          <div class="text-center mb-8 pt-6 pointer-events-none">
             <h3 class="text-2xl font-black text-white mb-4">減碳先驅 (Pioneer)</h3>
             <div class="flex items-end justify-center gap-2">
               <span class="text-5xl font-black text-leaf">NT$ 299</span>
               <span class="text-2xl text-gray-300 mb-1">/ 月</span>
             </div>
           </div>
-          <ul class="space-y-4 text-white/90 leading-8 flex-1">
+          <ul class="space-y-4 text-white/90 leading-8 flex-1 pointer-events-none">
             <li class="flex gap-3"><span class="text-leaf font-black">✓</span><span>每月抵消 4 棵樹的碳排</span></li>
             <li class="flex gap-3"><span class="text-leaf font-black">✓</span><span>實體植樹座標 GPS 紀錄追蹤</span></li>
-            <li class="flex gap-3"><span class="text-leaf font-black">✓</span><span>專屬碳中和電子證書（可分享）</span></li>
+            <li class="flex gap-3"><span class="text-leaf font-black">✓</span><span>專屬碳中和電子證書</span></li>
           </ul>
-          <button type="button" class="plan-btn mt-8 w-full rounded-full bg-leaf text-forest font-black py-4 hover:opacity-90 transition" data-role="primary">
+          <button type="button" class="plan-btn mt-8 w-full rounded-full bg-leaf text-forest font-black py-4 transition pointer-events-none">
             立即訂閱
           </button>
         </div>
 
-        <div class="pricing-plan bg-white rounded-[2rem] p-10 shadow-soft border border-gray-100 flex flex-col" data-plan="leader">
-          <div class="text-center mb-8">
+        <div class="pricing-plan bg-white rounded-[2rem] p-10 shadow-soft border border-gray-100 flex flex-col cursor-pointer" data-plan="leader">
+          <div class="text-center mb-8 pointer-events-none">
             <h3 class="text-2xl font-black text-forest mb-4">淨零領袖 (Leader)</h3>
             <div class="flex items-end justify-center gap-2">
               <span class="text-5xl font-black text-forest">NT$ 999</span>
               <span class="text-2xl text-gray-400 mb-1">/ 月</span>
             </div>
           </div>
-          <ul class="space-y-4 text-gray-700 leading-8 flex-1">
+          <ul class="space-y-4 text-gray-700 leading-8 flex-1 pointer-events-none">
             <li class="flex gap-3"><span class="text-accent font-black">✓</span><span>全家碳中和方案（抵消 15 棵樹）</span></li>
             <li class="flex gap-3"><span class="text-accent font-black">✓</span><span>企業級 ESG 個別顧問諮詢</span></li>
             <li class="flex gap-3"><span class="text-accent font-black">✓</span><span>年度個人環境影響力精裝報告</span></li>
           </ul>
-          <button type="button" class="plan-btn mt-8 w-full rounded-full border-2 border-forest text-forest font-black py-4 hover:bg-forest hover:text-white transition" data-role="secondary">
+          <button type="button" class="plan-btn mt-8 w-full rounded-full border-2 border-forest text-forest font-black py-4 transition pointer-events-none">
             選擇方案
           </button>
         </div>
       </div>
-
-      <p class="text-center text-sm text-gray-400 mt-8">展示用方案區塊，不包含實際付款功能。</p>
+      <p class="text-center text-sm text-gray-400 mt-8">點擊方案選擇，再次點擊即可前往產生專屬證書。</p>
     </div>
   </section>
 
@@ -617,6 +601,8 @@
     solutionCards.forEach(card => {
       card.addEventListener('click', () => {
         const targetId = card.getAttribute('data-target');
+        if (!targetId) return; // 跳過沒有 target 的卡片(例如第三個跳轉按鈕)
+        
         const targetPanel = document.getElementById(targetId);
         const isOpen = targetPanel.classList.contains('active');
         solutionDetails.forEach(panel => panel.classList.remove('active'));
@@ -631,8 +617,45 @@
       });
     });
 
+    // --- 新增：聰明的跳轉與數據傳遞邏輯 ---
+    // 這個函數會把使用者的輸入數值，轉換成 URL 參數帶到證書頁面
+    function goToCertificate(planName) {
+        const coffeeCarbon = Number(document.getElementById('coffeeCount').value) * 0.55 * 4;
+        const deliveryCarbon = Number(document.getElementById('deliveryCount').value) * 0.85 * 4;
+        const standbyCarbon = Number(document.getElementById('standbyHours').value) * 0.03 * 30;
+
+        let userWeakness = 'coffee';
+        let maxCarbon = coffeeCarbon;
+
+        if (deliveryCarbon > maxCarbon) {
+            userWeakness = 'delivery';
+            maxCarbon = deliveryCarbon;
+        }
+        if (standbyCarbon > maxCarbon) {
+            userWeakness = 'energy';
+        }
+        
+        // 使用相對路徑跳轉到 GitHub Pages 上的第二個檔案
+        window.location.href = `certificate.html?plan=${planName}&weakness=${userWeakness}`;
+    }
+
     const pricingPlans = document.querySelectorAll('.pricing-plan');
-    const planButtons = document.querySelectorAll('.plan-btn');
+    
+    // 優化方案選擇邏輯：點擊卡片選取，再次點擊就觸發跳轉
+    pricingPlans.forEach(plan => {
+      plan.addEventListener('click', () => {
+        const isSelected = plan.classList.contains('selected');
+        const planType = plan.getAttribute('data-plan');
+
+        if (isSelected) {
+          // 如果已經是被選取的狀態，再次點擊就會前往證書頁！
+          goToCertificate(planType);
+        } else {
+          // 如果還沒被選取，就執行選取效果
+          applyPlanSelection(plan);
+        }
+      });
+    });
 
     function applyPlanSelection(selectedPlan) {
       pricingPlans.forEach(plan => {
@@ -643,54 +666,37 @@
         const list = plan.querySelectorAll('ul li span:last-child');
 
         const isSelected = plan === selectedPlan;
-
         plan.classList.toggle('selected', isSelected);
 
         if (isSelected) {
           plan.classList.remove('bg-white','border-gray-100');
           plan.classList.add('bg-forest','border-accent');
-
           title.classList.remove('text-forest');
           title.classList.add('text-white');
-
           if(priceMain){priceMain.classList.remove('text-forest'); priceMain.classList.add('text-leaf');}
           if(priceUnit){priceUnit.classList.remove('text-gray-400'); priceUnit.classList.add('text-gray-300');}
-
           list.forEach(el=>{
             el.classList.remove('text-gray-700');
             el.classList.add('text-white');
           });
-
-          button.textContent = '立即訂閱';
-          button.className = 'plan-btn mt-8 w-full rounded-full bg-leaf text-forest font-black py-4 hover:opacity-90 transition';
-
+          button.textContent = '立即訂閱 (點擊前往)';
+          button.className = 'plan-btn mt-8 w-full rounded-full bg-leaf text-forest font-black py-4 hover:opacity-90 transition pointer-events-none';
         } else {
           plan.classList.remove('bg-forest','border-accent');
           plan.classList.add('bg-white','border-gray-100');
-
           title.classList.remove('text-white');
           title.classList.add('text-forest');
-
           if(priceMain){priceMain.classList.remove('text-leaf'); priceMain.classList.add('text-forest');}
           if(priceUnit){priceUnit.classList.remove('text-gray-300'); priceUnit.classList.add('text-gray-400');}
-
           list.forEach(el=>{
             el.classList.remove('text-white');
             el.classList.add('text-gray-700');
           });
-
           button.textContent = '選擇方案';
-          button.className = 'plan-btn mt-8 w-full rounded-full border-2 border-forest text-forest font-black py-4 hover:bg-forest hover:text-white transition';
+          button.className = 'plan-btn mt-8 w-full rounded-full border-2 border-forest text-forest font-black py-4 hover:bg-forest hover:text-white transition pointer-events-none';
         }
       });
     }
-
-    planButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const selectedPlan = button.closest('.pricing-plan');
-        applyPlanSelection(selectedPlan);
-      });
-    });
   </script>
 </body>
 </html>
