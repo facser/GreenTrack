@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的影響力儀表板 | GreenTrack</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        forest: '#0b3d2e',
+                        leaf: '#7ac143',
+                        accent: '#23c16b',
+                        earth: '#f4f1ea',
+                        mist: '#f8faf8'
+                    },
+                    boxShadow: {
+                        soft: '0 4px 20px rgba(0,0,0,0.05)',
+                        card: '0 10px 30px rgba(0,0,0,0.08)'
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        body { font-family: "Noto Sans TC", sans-serif; background-color: #f8faf8; }
+        .map-bg {
+            /* 使用靜態世界地圖圖片作為背景，模擬 GPS 介面 */
+            background: linear-gradient(rgba(11, 61, 46, 0.85), rgba(11, 61, 46, 0.95)), url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+        }
+        .pulse-dot {
+            position: absolute;
+            width: 12px; height: 12px;
+            background-color: #7ac143;
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(122, 193, 67, 0.7);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(122, 193, 67, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(122, 193, 67, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(122, 193, 67, 0); }
+        }
+        /* 隱藏捲軸但可滑動 */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Chosen Palette: Forest (#0b3d2e), Leaf (#7ac143), Earth (#f4f1ea), Mist (#f8faf8) -->
+    <!-- Application Structure Plan: This is the 'Retention' phase dashboard (Post-Purchase). It combines the highly requested features: Offset Progress Bar, GPS Map, and Gamification Badges into a single, comprehensive user portal. The layout uses a classic dashboard structure (Top nav + CSS Grid widgets) for easy data consumption. -->
+    <!-- Visualization & Content Choices: 
+         - Offset Progress Bar: Built with Tailwind CSS width utilities and simple JS to show the race between emitted vs. offset carbon.
+         - GPS Impact Map: Simulated using a background image and CSS keyframe animations (pulse dots) to represent planted trees, avoiding complex map APIs while delivering the visual 'Wow' factor.
+         - Gamification Badges: CSS opacity toggles with Unicode icons (🏆, 🌱, 🚲) to show locked/unlocked states. No SVGs used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <!-- 頂部導航列 -->
+    <header class="bg-white shadow-sm z-50 sticky top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
+            <a href="index.html" class="text-forest font-bold text-xl tracking-wide flex items-center gap-2">
+                <span>🌿</span> GreenTrack
+            </a>
+            <div class="flex items-center gap-4">
+                <span class="text-sm text-gray-500 hidden sm:inline">目前方案：<strong class="text-accent" id="navPlanName">減碳先驅</strong></span>
+                <div class="w-10 h-10 rounded-full bg-forest text-white flex items-center justify-center font-bold shadow-md cursor-pointer hover:bg-leaf transition">
+                    Me
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        
+        <div class="mb-8">
+            <h1 class="text-3xl font-black text-forest">早安，<span id="userNameDisplay">地球公民</span>！</h1>
+            <p class="text-gray-500 mt-2">這裡是你的個人影響力中心。讓我們看看你本月為地球帶來的改變。</p>
+        </div>
+
+        <!-- 儀表板網格系統 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- 左側/上方：核心進度與數據 (佔據 2 欄) -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- 卡片 1：碳抵消進度條 (Offset Progress Bar) -->
+                <div class="bg-white rounded-3xl p-8 shadow-card border border-gray-100 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-leaf text-forest text-xs font-bold px-4 py-1 rounded-bl-xl">即時追蹤</div>
+                    <h2 class="text-xl font-bold text-forest mb-6 flex items-center gap-2"><span>⚖️</span> 本月碳中和進度</h2>
+                    
+                    <div class="flex justify-between text-sm font-medium mb-2">
+                        <span class="text-red-500">已排放：<span id="emittedCarbon">19.2</span> kg</span>
+                        <span class="text-accent">已抵消：<span id="offsetCarbon">25.0</span> kg</span>
+                    </div>
+                    
+                    <!-- 進度條軌道 -->
+                    <div class="w-full bg-gray-100 rounded-full h-6 relative overflow-hidden">
+                        <!-- 抵消進度 (綠色) -->
+                        <div id="progressBarOffset" class="bg-gradient-to-r from-accent to-leaf h-6 rounded-full absolute top-0 left-0 transition-all duration-1000 ease-out" style="width: 100%;"></div>
+                        <!-- 排放進度 (覆蓋在上面，半透明灰色/紅色) -->
+                        <div id="progressBarEmitted" class="bg-gray-800/20 border-r-4 border-white h-6 rounded-l-full absolute top-0 left-0 transition-all duration-1000 ease-out" style="width: 76.8%;"></div>
+                    </div>
+                    
+                    <div class="mt-6 flex items-center justify-between p-4 bg-earth rounded-2xl">
+                        <div>
+                            <p class="text-sm text-gray-500">當前狀態</p>
+                            <p class="font-black text-forest text-lg" id="statusText">達成 100% 淨零排放 🎉</p>
+                        </div>
+                        <button class="bg-forest text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-leaf hover:text-forest transition">
+                            新增手動紀錄
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 卡片 2：專屬小樹 GPS 衛星地圖 (GPS Impact Map) -->
+                <div class="bg-white rounded-3xl p-2 shadow-card border border-gray-100">
+                    <div class="p-6 pb-4 flex justify-between items-end">
+                        <div>
+                            <h2 class="text-xl font-bold text-forest flex items-center gap-2"><span>🛰️</span> 你的植樹座標追蹤</h2>
+                            <p class="text-sm text-gray-500 mt-1">透過衛星數據，看見你的訂閱資金實際落地的位置。</p>
+                        </div>
+                        <span class="text-xs bg-gray-100 text-gray-500 px-3 py-1 rounded-full">更新於 2 小時前</span>
+                    </div>
+                    
+                    <!-- 模擬地圖區域 -->
+                    <div class="map-bg rounded-2xl h-80 relative overflow-hidden border-4 border-white">
+                        <!-- 地圖上的動態座標點 (代表樹木) -->
+                        <div class="pulse-dot" style="top: 45%; left: 75%;" title="台灣海岸林復育區"></div>
+                        <div class="pulse-dot" style="top: 60%; left: 80%;" title="印尼紅樹林計畫"></div>
+                        <div class="pulse-dot" style="top: 55%; left: 20%;" title="亞馬遜雨林保育"></div>
+                        
+                        <!-- 浮動資訊卡 -->
+                        <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg max-w-xs">
+                            <p class="text-xs text-gray-500 mb-1">最近一次種植紀錄</p>
+                            <p class="font-bold text-forest text-sm">📍 台灣海岸防風林計畫</p>
+                            <p class="text-xs text-accent mt-1">✓ 存活率 98% (樹苗健康)</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 右側：勳章與統計 (佔據 1 欄) -->
+            <div class="space-y-8">
+                
+                <!-- 卡片 3：環保成就數位勳章 (Gamification Badges) -->
+                <div class="bg-white rounded-3xl p-8 shadow-card border border-gray-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-forest flex items-center gap-2"><span>🏅</span> 成就解鎖</h2>
+                        <span class="text-sm font-bold text-accent">3 / 8</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4">
+                        <!-- 已解鎖勳章 -->
+                        <div class="flex flex-col items-center gap-2 group cursor-help">
+                            <div class="w-16 h-16 rounded-full bg-earth border-2 border-gold flex items-center justify-center text-3xl shadow-soft transform group-hover:scale-110 transition">🌱</div>
+                            <span class="text-xs text-center font-bold text-forest">綠色種子</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 group cursor-help">
+                            <div class="w-16 h-16 rounded-full bg-earth border-2 border-gold flex items-center justify-center text-3xl shadow-soft transform group-hover:scale-110 transition">🥡</div>
+                            <span class="text-xs text-center font-bold text-forest">無痕飲食</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 group cursor-help">
+                            <div class="w-16 h-16 rounded-full bg-earth border-2 border-gold flex items-center justify-center text-3xl shadow-soft transform group-hover:scale-110 transition">📜</div>
+                            <span class="text-xs text-center font-bold text-forest">初次承諾</span>
+                        </div>
+                        
+                        <!-- 未解鎖勳章 (灰色半透明) -->
+                        <div class="flex flex-col items-center gap-2 opacity-40 grayscale">
+                            <div class="w-16 h-16 rounded-full bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-3xl">🚲</div>
+                            <span class="text-xs text-center font-medium">低碳通勤</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 opacity-40 grayscale">
+                            <div class="w-16 h-16 rounded-full bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-3xl">🔌</div>
+                            <span class="text-xs text-center font-medium">節電大師</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-2 opacity-40 grayscale">
+                            <div class="w-16 h-16 rounded-full bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-3xl">🌲</div>
+                            <span class="text-xs text-center font-medium">造林英雄</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 卡片 4：快捷功能區 (Quick Actions) -->
+                <div class="bg-earth rounded-3xl p-8 shadow-inner border border-gray-200">
+                    <h2 class="text-lg font-bold text-forest mb-4">快捷功能</h2>
+                    <div class="space-y-3">
+                        <button onclick="window.location.href='certificate.html'" class="w-full bg-white text-forest py-3 px-4 rounded-xl font-bold shadow-sm hover:border-accent border border-transparent transition flex justify-between items-center">
+                            <span>查看本月碳中和證書</span> <span>➔</span>
+                        </button>
+                        <button class="w-full bg-white text-forest py-3 px-4 rounded-xl font-bold shadow-sm hover:border-accent border border-transparent transition flex justify-between items-center">
+                            <span>下載歷史 ESG 帳單</span> <span>➔</span>
+                        </button>
+                        <button onclick="window.location.href='index.html#calculator'" class="w-full bg-white text-forest py-3 px-4 rounded-xl font-bold shadow-sm hover:border-accent border border-transparent transition flex justify-between items-center">
+                            <span>重新計算生活碳排</span> <span>➔</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 初始化儀表板數據 (從 URL 參數模擬讀取登入資訊)
+        function initDashboard() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const plan = urlParams.get('plan') || 'pioneer';
+            
+            // 1. 設定方案名稱
+            const navPlanName = document.getElementById('navPlanName');
+            let offsetCapacity = 0; // 這個方案可以抵消多少 kg
+
+            if (plan === 'seed') {
+                navPlanName.textContent = '種子成員';
+                offsetCapacity = 20.0; // 模擬 1 棵樹約可抵消 20kg/月
+            } else if (plan === 'leader') {
+                navPlanName.textContent = '淨零領袖';
+                offsetCapacity = 300.0; // 模擬 15 棵樹
+            } else {
+                navPlanName.textContent = '減碳先驅';
+                offsetCapacity = 80.0; // 模擬 4 棵樹
+            }
+
+            // 2. 模擬讀取使用者的碳排量 (用一個隨機數模擬，確保不超過抵消量太多以保持正向回饋)
+            // 在真實系統中，這會是從資料庫讀取的加總
+            const emittedMock = (Math.random() * (offsetCapacity * 0.8) + 5).toFixed(1); 
+            
+            document.getElementById('emittedCarbon').textContent = emittedMock;
+            document.getElementById('offsetCarbon').textContent = offsetCapacity.toFixed(1);
+
+            // 3. 計算進度條比例
+            const progressBarEmitted = document.getElementById('progressBarEmitted');
+            const statusText = document.getElementById('statusText');
+            
+            let percent = (emittedMock / offsetCapacity) * 100;
+            
+            // 動畫延遲執行讓視覺效果更好
+            setTimeout(() => {
+                if (percent > 100) {
+                    progressBarEmitted.style.width = '100%';
+                    progressBarEmitted.classList.replace('bg-gray-800/20', 'bg-red-500/50');
+                    statusText.textContent = '⚠️ 碳排超標！考慮升級方案';
+                    statusText.classList.replace('text-forest', 'text-red-500');
+                } else {
+                    progressBarEmitted.style.width = `${percent}%`;
+                    statusText.textContent = `達成 100% 淨零排放 🎉 (還有餘裕！)`;
+                }
+            }, 500);
+        }
+
+        // 頁面載入後執行
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>
